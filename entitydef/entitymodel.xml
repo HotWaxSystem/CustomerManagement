@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <!-- ========================================================= -->
+    <!-- ======================== Defaults ======================= -->
+    <!-- ========================================================= -->
+    <title>Entity of Customermgmt Component</title>
+    <description>None</description>
+    <copyright></copyright>
+    <version></version>
+
+    <view-entity entity-name="FindCustomerView" package-name="ofbiz.customer">
+        <member-entity entity-alias="PER" entity-name="Person"/>
+        <member-entity entity-alias="PR" entity-name="PartyRole"/>
+        <member-entity entity-alias="CM" entity-name="ContactMech"/>
+        <member-entity entity-alias="PACM" entity-name="PostalAddress"/>
+        <member-entity entity-alias="TNCM" entity-name="TelecomNumber"/>
+        <member-entity entity-alias="PCM" entity-name="PartyContactMech"/>
+        <member-entity entity-alias="PM" entity-name="PaymentMethod"/>
+        <member-entity entity-alias="CC" entity-name="CreditCard"/>
+        
+        <alias name="partyId" entity-alias="PR" field="partyId"/>
+        <alias name="firstName" entity-alias="PER" field="firstName"/>
+        <alias name="lastName" entity-alias="PER" field="lastName"/>
+        <alias name="gender" entity-alias="PER" field="gender"/>
+        <alias name="birthDate" entity-alias="PER" field="birthDate"/>
+        <alias name="role" entity-alias="PR" field="roleTypeId"/>
+        <alias name="email" entity-alias="CM" field="infoString"/>
+        <alias name="address1" entity-alias="PACM" field="address1"/>
+        <alias name="address2" entity-alias="PACM" field="address2"/>
+        <alias name="city" entity-alias="PACM" field="city"/>
+        <alias name="postalCode" entity-alias="PACM" field="postalCode"/>
+        <alias name="stateProvinceGeoId" entity-alias="PACM" field="stateProvinceGeoId"/>
+        <alias name="contactNumber" entity-alias="TNCM" field="contactNumber"/>
+        <alias name="cardNumber" entity-alias="CC" field="cardNumber"/>
+
+        <view-link entity-alias="PR" rel-entity-alias="PER">
+            <key-map field-name="partyId"/>
+            <entity-condition>
+                <condition-expr entity-alias="PR" field-name="roleTypeId" operator="equals" value="CUSTOMER"/>
+            </entity-condition>
+        </view-link>
+        <view-link entity-alias="PER" rel-entity-alias="PCM">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PCM" rel-entity-alias="CM">
+            <key-map field-name="contactMechId"/>
+        </view-link>
+        <view-link entity-alias="CM" rel-entity-alias="PACM" rel-optional="true">
+            <key-map field-name="contactMechId"/>
+        </view-link>
+        <view-link entity-alias="CM" rel-entity-alias="TNCM" rel-optional="true">
+            <key-map field-name="contactMechId"/>
+        </view-link>
+        <view-link entity-alias="PR" rel-entity-alias="PM">
+            <key-map field-name="partyId"/>
+        </view-link>
+        <view-link entity-alias="PM" rel-entity-alias="CC">
+            <key-map field-name="paymentMethodId"/>
+        </view-link>
+    </view-entity>
+</entitymodel>
